@@ -10,7 +10,7 @@ search.addEventListener("keyup", function () {
       card.innerHTML = `
       <div class="text-center" style="color:white;">
         <h2>Film Tidak Ditemukan</h2>
-      </div>`;
+      </div>`; 
       $("#data").html(card);
       
     } else {
