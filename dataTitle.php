@@ -3,9 +3,9 @@ require_once("./db.php");
 
 $search = $_GET["search"];
 
-$sql = "SELECT * FROM film
+$sql = "SELECT * FROM bestsellers_with_categories
             WHERE 
-        title LIKE '%{$search}%'";
+        Name LIKE '%{$search}%'";
 
 $result = $db->query($sql);
 

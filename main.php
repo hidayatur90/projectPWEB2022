@@ -20,7 +20,7 @@
             background-attachment: fixed;
             background-size: cover;
         }   
-        .card {
+        /* .card {
             margin-top: 20px;
             height: auto;
             width: auto;
@@ -29,7 +29,7 @@
         }
         .card:hover{
             transform: scale(1.1);
-        }
+        } */
         .card-img-top {
             margin: 10px;
             min-height: 17rem;
@@ -52,6 +52,7 @@
             flex-direction: row;
             transition: transform .2s;
             margin-top: -40px;
+            background-color: white;
         }
         .trash-icon:hover{
             transform: scale(1.5);
@@ -67,6 +68,7 @@
         button{
             border:none;
             color: blue;
+            background-color: white;
         }
         .btn-primary {
             margin-top: 30px;
@@ -82,8 +84,11 @@
             text-decoration: none !important; 
             color:black;
         }
-        h2 a {
+        h4, h2 a {
             color:#012970;
+        }
+        #books:hover{
+            transform: scale(1.02);
         }
     </style>
 </head>
@@ -92,13 +97,13 @@
         <div class="container-fluid">
             <div class="row g-2 g-lg-3 mt-4"> 
                 <div class="col-lg-10 px-5">
-                    <h2 class="fw-bolder"><a href="index.html">Best & Popular Books</a></h2>
+                    <strong><h2 class="fw-bolder"><a href="index.html">Best & Popular Books</a></h2></strong> 
                 </div>
-                <div class="col-lg-2 gx-5 px-4 ml-4">
-                    <button type="button" class="btn btn-primary">
-                        <i class="bi bi-plus-circle-fill white"></i>
-                        Create
-                    </button>
+                <div class="col-lg-2 gx-5 px-4 ml-4 mb-3">
+                <a href="form.php" class="btn btn-primary">
+                    <i class="bi bi-plus-circle-fill white"></i>
+                    Create
+                </a>
                 </div>
             </div>
         </div>
@@ -138,7 +143,7 @@
                                 <div class="form-floating mb-3">
                                     <input type="text" class="form-control" id="search"
                                         placeholder="Search by Title" />
-                                    <label for="title">Search by Title</label>
+                                    <label for="title">Cari Judul Buku</label>
                                 </div>
                                 <div class="col-md">
                                     <div class="form-floating">
@@ -157,7 +162,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-grid gap-2 mt-3">
+                        <div class="d-grid gap-2">
                             <button class="btn btn-primary" type="button" id="submit">Search</button>
                         </div>
                     </form>
@@ -166,27 +171,26 @@
                     <div class="row" id="data">
                     <?php
                         require_once ("./db.php");
-                        $sql = "SELECT * FROM bestsellers_with_categories LIMIT 12";
+                        $sql = "SELECT * FROM bestsellers_with_categories LIMIT 4";
                         $result = $db->query($sql);
                         while ($row = $result->fetch_assoc()) { ?>
 
-                        <div class="col-12 col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 mx-0.5 my-1">
-                            <a href="detailFilm.php?id=<?=$row['id']?>">
-                            <div class="card" data-aos="fade-up">
-                                <img src="assets/img/no-image.png" class="card-img-top" alt="<?= $row["Name"]; ?>">
+                        <div class="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9 mx-0.5 my-1">
+                            <div class="card" id="books" data-aos="fade-up">
+                                <a href="bookDetail.php?id=<?=$row['id']?>"><img src="assets/img/no-image.png" class="card-img-top" alt="<?= $row["Name"]; ?>"></a>
                                 <div class="card-body">
-                                    <marquee><h4 class="card-title"><?= $row["Name"]; ?></h4></marquee>
-                                    <p class="card-text">Rating: <?= $row["User Rating"]; ?></p>
+                                    <h4 class="card-title"><strong><?= $row["Name"]; ?></h4></strong> 
+                                    <p class="card-text">Rating: <?= $row["Rating"]; ?></p>
                                     <div class="icon">
-                                        <button type="button" class="edit-icon">
+                                        <a href="form.php" class="edit-icon">
                                             <i class="bi bi-pencil-square"></i>
-                                        </button>
-                                        <button type="button" class="trash-icon">
+                                        </a>
+                                        <a href="form.php" class="trash-icon">
                                             <i class="bi bi-trash3-fill red"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
-                            </div></a>
+                            </div>
                         </div>
                     <?php } ?>
                 </div>
@@ -208,7 +212,7 @@
     <script>
         AOS.init();
     </script>
-    <script src="title.js"></script>
+    <script src="title2.js"></script>
     <script src="rating.js"></script>
     <script>
         AOS.init();
