@@ -33,19 +33,57 @@ class Book
         echo json_encode($data);
     }
 
-    function create($data)
+    function get_max_id(){
+        require_once("db.php");
+        $query = "SELECT max(id) as id FROM author";
+        $result = $this->db->query($query); 
+        $sql = 0;
+        while ($row = $result->fetch_assoc()){
+            $sql += $row['id'];
+        }
+        return $sql+1;
+    }
+
+    function create_author($data)
     {
         foreach ($data as $key => $value) {
             $value = is_array($value) ? trim(implode(',', $value)) : trim($value);
             $data[$key] = (strlen($value) > 0 ? $value : NULL);
         }
         
+        $query = "INSERT INTO author VALUES(NULL, ?)";
+        $sql = $this->db->prepare($query);
+        $sql -> bind_param(
+            's',
+            $data['author_id']
+        );
+        
+        try {
+            $sql -> execute();
+        } catch (\Exception $e) {
+            $sql -> close();
+            http_response_code(500);
+            die($e -> getMessage());
+        }
+        $sql -> close();
+    }
+
+    function create($data)
+    {
+        foreach ($data as $key => $value) {
+            $value = is_array($value) ? trim(implode(',', $value)) : trim($value);
+            $data[$key] = (strlen($value) > 0 ? $value : NULL);
+        }
+
+        $auth_id = $this->get_max_id();
+        $this->create_author($data);
+        
         $query = "INSERT INTO books VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)";
         $sql = $this -> db -> prepare($query);
         $sql -> bind_param(
-            'ssisiis',
+            'siiiiii',
             $data['Name'],
-            $data['author_id'],
+            $auth_id,
             $data['Rating'],
             $data['Reviews'],
             $data['Price'],
@@ -61,7 +99,6 @@ class Book
             die($e -> getMessage());
         }
         $sql -> close();
-
     }
 }
 

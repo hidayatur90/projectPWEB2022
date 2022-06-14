@@ -71,7 +71,7 @@
                         <label for="Reviews" class="col-form-label">Reviews</label>
                     </div>
                     <div class="col-6">
-                        <textarea class="form-control" id="Reviews" name="Reviews" style="height: 60px"></textarea>
+                        <input type="number" id="Reviews" name="Reviews" class="form-control" required>
                     </div>
                 </div>
                 <div class="row py-2 g-3 align-items-center">
@@ -96,8 +96,8 @@
                         <label for="genre_id" class="col-form-label">Genre</label>
                     </div>
                     <div class="col-6">
-                        <select class="form-select" id="genre_id" name="genre_id">
-                            <option value="" selected>-</option>
+                        <select class="form-select" aria-label="Default select example" name="genre_id" id="genre_id" aria-placeholder="Language" required>
+                            <option selected>-</option>
                         </select>
                     </div>
                 </div>
@@ -121,6 +121,12 @@
     </script>
     <script>
     $(document).ready(function() {
+        $.get("genre.php", function(response){
+            $.each(response, function(key,value){
+                $("#genre_id").append("<option value='" + value.id + "'>" + value.genre + "</option>");
+            });
+        });
+
         $("form").submit(function(event) {
             event.preventDefault();
             var book = $(this).serialize();
