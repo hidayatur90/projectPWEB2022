@@ -14,10 +14,36 @@ class Book
         }
     }
 
-    function read()
-    {
+    function read(){
         $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
-        $query = "SELECT * FROM books ORDER BY Name ASC LIMIT {$begin}, 9";
+        $query = "SELECT books.*,genre.genre FROM books
+            JOIN genre ON books.genre_id = genre.id 
+            ORDER BY Name ASC 
+            LIMIT {$begin}, 4";
+        $sql = $this->db->query($query);
+        $data = [];
+
+        while($row = $sql->fetch_assoc()){
+            if(file_exists("assets/{$row['id']}.jpg")){
+                $row['img'] = "assets/{$row['id']}.jpg";
+            } else{
+                $row['img'] = "assets/no-image.png";
+            }
+            array_push($data, $row);
+        }
+
+        header("Content-Type: application/json");
+        echo json_encode($data);
+    }
+
+    function read_detail($book_id)
+    {
+        $query = "SELECT books.*, author.name AS Author, genre.genre AS Genre 
+            FROM books 
+            JOIN author ON books.author_id = author.id 
+            JOIN genre ON books.genre_id = genre.id 
+            WHERE id=$book_id";
+            
         $sql = $this -> db -> query($query);
         $data = [];
         while ($row = $sql -> fetch_assoc()) {
@@ -30,7 +56,7 @@ class Book
         }
 
         header("Content-Type: application/json");
-        echo json_encode($data);
+        return json_encode($data);
     }
 
     function get_max_id(){
@@ -103,7 +129,7 @@ class Book
 }
 
 $book = new Book();
-// $book-> read();
+// $book->read();
 switch ($_GET['action']) {
     case 'create':
         $book -> create($_POST);

@@ -3,9 +3,15 @@
 require_once('db.php');
 
 $book_id = $_GET['id'];
- 
-$result = mysqli_query($db, "SELECT * FROM bestsellers_with_categories WHERE id=$book_id");
- 
+
+$query = "SELECT books.*, author.name AS Author, genre.genre AS Genre 
+        FROM books 
+        JOIN author ON books.author_id = author.id 
+        JOIN genre ON books.genre_id = genre.id 
+        WHERE books.id=$book_id";
+
+$result = mysqli_query($db, $query);
+
 while($row = mysqli_fetch_array($result))
 {
 	$name = $row['Name'];

@@ -104,18 +104,15 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="fw-bolder">
-                                    <i class="bi bi-sort-alpha-down"></i>
-                                    Sorting
+                                    <i class="bi bi-search"></i>
+                                    Cari
                                 </h4>
                             </div>
                             <div class="card-body">
                                 <div class="form-floating">
-                                    <select class="form-select" id="sorting" aria-label="Floating label select">
-                                        <option selected>-</option>
-                                        <option value="ASC">A ~ Z</option>
-                                        <option value="DESC">Z ~ A</option>
-                                    </select>
-                                    <label for="movieYear">Sort Result by</label>
+                                    <input type="text" class="form-control" id="search"
+                                        placeholder="Search by Title" />
+                                    <label for="title">Cari Judul Buku</label>
                                 </div>
                             </div>
                         </div>
@@ -125,29 +122,29 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="fw-bolder">
-                                    <i class="bi bi-funnel-fill"></i>
+                                    <i class="bi bi-sort-alpha-down"></i>
                                     Filter
                                 </h4>
                             </div>
                             <div class="card-body">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="search"
-                                        placeholder="Search by Title" />
-                                    <label for="title">Cari Judul Buku</label>
-                                </div>
                                 <div class="col-md">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="rating" aria-label="Floating label select"
-                                            name="rating">
-                                            <option value="" disabled selected>Search by Movie Rating</option>
-                                            <option value="">All Rating</option>
-                                            <option value="PG">PG</option>
-                                            <option value="G">G</option>
-                                            <option value="NC-17">NC-17</option>
-                                            <option value="PG-13">PG-13</option>
-                                            <option value="R">R</option>
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" id="sorting" aria-label="Floating label select">
+                                            <option selected>-</option>
+                                            <option value="ASC">A ~ Z</option>
+                                            <option value="DESC">Z ~ A</option>
                                         </select>
-                                        <label for="movieYear">Search by Genre</label>
+                                        <label for="movieYear">Sort Result by</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <select class="form-select" id="genre" aria-label="Floating label select"
+                                            name="genre">
+                                            <option value="" disabled selected>Sort by Genre</option>
+                                            <option value="">All Genre</option>
+                                            <option value="1">Fiction</option>
+                                            <option value="2">Non Foction</option>
+                                        </select>
+                                        <label for="movieYear">Sort by Genre</label>
                                     </div>
                                 </div>
                             </div>
@@ -158,31 +155,12 @@
                     </form>
                 </div>
                 <div class="col-lg-9">
-                    <div class="row" id="data">
-                    <?php
-                        require_once ("./db.php");
-                        $sql = "SELECT * FROM books LIMIT 4";
-                        $result = $db->query($sql);
-                        while ($row = $result->fetch_assoc()) { ?>
-
-                        <div class="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9 mx-0.5 my-1">
-                            <div class="card" id="books" data-aos="fade-up">
-                                <a href="bookDetail.php?id=<?=$row['id']?>"><img src="assets/img/no-image.png" class="card-img-top" alt="<?= $row["Name"]; ?>"></a>
-                                <div class="card-body">
-                                    <h4 class="card-title"><strong><?= $row["Name"]; ?></h4></strong> 
-                                    <p class="card-text">Rating: <?= $row["Rating"]; ?></p>
-                                    <div class="icon">
-                                        <a href="form.php" class="edit-icon">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a href="form.php" class="trash-icon">
-                                            <i class="bi bi-trash3-fill red"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row" id="data"></div>
+                    <div class="row g-4 mt-2">
+                        <div class="col-12 d-grid">
+                            <button class="btn btn-primary" id="load"><i class="bi bi-arrow-bar-down me-2"></i></i>Load More</button>
                         </div>
-                    <?php } ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -199,10 +177,46 @@
     <!-- Bootstrap -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="title22.js"></script>
+    <script src="genre.js"></script>
     <script>
-        AOS.init();
+        var page = 0;
+        $(document).ready(function(){
+            $("#load").click(function (){
+                $(this).html("Loading...").attr("disabled", "disabled")
+                $.post("data.php?action="+page, function(response){
+                    console.log('test');
+                    $.each(response, function (key,value){
+                        $("#data").append(
+                        `<div class="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9 mx-0.5 my-1">
+                            <div class="card" id="books" data-aos="fade-up">
+                                <img src="assets/img/no-image.png" class="card-img-top" alt="` + value.Name + `">
+                                <div class="card-body">
+                                    <a href="bookDetail.php?id=` + value.id + `">
+                                    <h4 class="card-title">
+                                        <strong>` + 
+                                            value.Name + 
+                                        `</strong>
+                                    </h4></a>
+                                    <p class="card-text">Genre: ` + value.genre + `</p>
+                                    <div class="icon">
+                                        <a href="form.php" class="edit-icon">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="form.php" class="trash-icon">
+                                            <i class="bi bi-trash3-fill red"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`);
+                    });
+                    AOS.init();
+                    page += 4;
+                    $("#load").html("<i class='bi bi-arrow-bar-down me-2'></i>Load More").removeAttr("disabled")
+                });
+            }).trigger('click');
+        });
     </script>
-    <script src="title2.js"></script>
-    <script src="rating.js"></script>
 </body>
 </html>
