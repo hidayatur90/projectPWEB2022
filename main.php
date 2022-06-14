@@ -20,16 +20,6 @@
             background-attachment: fixed;
             background-size: cover;
         }   
-        /* .card {
-            margin-top: 20px;
-            height: auto;
-            width: auto;
-            transition: transform .2s;
-            background-color: rgb(236, 236, 236);
-        }
-        .card:hover{
-            transform: scale(1.1);
-        } */
         .card-img-top {
             margin: 10px;
             min-height: 17rem;
@@ -171,7 +161,7 @@
                     <div class="row" id="data">
                     <?php
                         require_once ("./db.php");
-                        $sql = "SELECT * FROM bestsellers_with_categories LIMIT 4";
+                        $sql = "SELECT * FROM books LIMIT 4";
                         $result = $db->query($sql);
                         while ($row = $result->fetch_assoc()) { ?>
 
@@ -214,8 +204,5 @@
     </script>
     <script src="title2.js"></script>
     <script src="rating.js"></script>
-    <script>
-        AOS.init();
-    </script>
 </body>
 </html>
