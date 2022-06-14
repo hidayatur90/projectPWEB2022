@@ -42,6 +42,7 @@
                 <i class="bi bi-plus-circle-fill"></i> Add New Book
             </h3>
             <form action="data.php">
+                <input type="hidden" id="id" name="id">
                 <div class="row py-2 g-3 align-items-center">
                     <div class="col-sm-1 required">
                         <label for="Name" class="col-form-label">Name</i></label>
@@ -109,7 +110,7 @@
                             Back</a>
                     </div>
                 </div>
-        </div>
+            </div>
         </form>
     </div>
     <!-- Jquery -->
@@ -125,15 +126,39 @@
             $.each(response, function(key,value){
                 $("#genre_id").append("<option value='" + value.id + "'>" + value.genre + "</option>");
             });
-        });
 
-        $("form").submit(function(event) {
-            event.preventDefault();
-            var book = $(this).serialize();
-            $.post("data.php?action=create", book, function(response) {
-                alert("Data berhasil ditambahkan.");
+            var params = window.location.search.substr(1).split('&');
+            for(var i = 0; i < params.length; i++){
+                params[i] = params[i].split('=');
+            }
+            if(params[0][0] == "action" && params[0][1] == "update"){
+                $.get("data.php?action=edit&id=" + params[1][1], function(response){
+                    $("form #id").val(response.id_book);
+                    $("form #Name").val(response.Name);
+                    $("form #author_id").val(response.Author);
+                    $("form #Rating").val(response.Rating);
+                    $("form #Reviews").val(response.Reviews);
+                    $("form #Price").val(response.Price);
+                    $("form #Year").val(response.Year);
+                    $("form #genre_id").val(response.genre_id);
+                });
+            }
+            $("form").submit(function(event) {
+                event.preventDefault();
+                var book = $(this).serialize();
+                if(params[0][0] == "action" && params[0][1] == "update"){
+                    $.post("data.php?action=update", book, function(response) {
+                        alert("Data berhasil diubah.");
+                    });
+                } else{
+                    $.post("data.php?action=create", book, function(response) {
+                        alert("Data berhasil ditambahkan.");
+                    });
+                }
             });
+
         });
+        
     });
     </script>
 </body>

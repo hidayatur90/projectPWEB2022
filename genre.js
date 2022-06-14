@@ -2,7 +2,7 @@ var genre = document.getElementById("genre");
 
 $("#submit").click( function () {
   $("#data").html("");
-  $.get("./dataGenre.php?genre=" + genre.value,  function (response) {
+  $.get("data.php?action=read&genre=" + genre.value,  function (response) {
     var panjang = response.length;
     if (panjang == 0) {
       const card = document.createElement('div');

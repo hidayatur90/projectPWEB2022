@@ -179,18 +179,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="title22.js"></script>
     <script src="genre.js"></script>
+    <script src="sort.js"></script>
     <script>
         var page = 0;
         $(document).ready(function(){
             $("#load").click(function (){
                 $(this).html("Loading...").attr("disabled", "disabled")
-                $.post("data.php?action="+page, function(response){
+                $.post("data.php?action=read&begin="+page, function(response){
                     console.log('test');
                     $.each(response, function (key,value){
                         $("#data").append(
                         `<div class="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9 mx-0.5 my-1">
                             <div class="card" id="books" data-aos="fade-up">
-                                <img src="assets/img/no-image.png" class="card-img-top" alt="` + value.Name + `">
+                                <img src='` + value.img +`' class="card-img-top" alt="` + value.Name + `">
                                 <div class="card-body">
                                     <a href="bookDetail.php?id=` + value.id + `">
                                     <h4 class="card-title">
@@ -200,10 +201,10 @@
                                     </h4></a>
                                     <p class="card-text">Genre: ` + value.genre + `</p>
                                     <div class="icon">
-                                        <a href="form.php" class="edit-icon">
+                                        <a href="form.php?action=update&id=` + value.id + `" class="edit-icon">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <a href="form.php" class="trash-icon">
+                                        <a href="data.php?action=delete&id=` + value.id + `" class="trash-icon">
                                             <i class="bi bi-trash3-fill red"></i>
                                         </a>
                                     </div>
