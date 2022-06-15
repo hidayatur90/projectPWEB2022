@@ -15,40 +15,60 @@ class Book
     }
 
     function read(){
-        
         $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
-        if (isset($_GET['search'])) {
-            $search = $_GET['search'];
-            $query = "SELECT books.*,genre.genre FROM books
-                JOIN genre ON books.genre_id = genre.id 
-                WHERE Name LIKE '%{$search}%'
-                ORDER BY Name ASC
-                LIMIT {$begin}, 4";
-            $sql = $this->db->query($query);
-        } else if (isset($_GET['genre'])) {
-            $genre = isset($_GET['genre']) ? $_GET['genre'] : 0;
-            $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
-            if (strlen($genre) > 0){
-                $query = "SELECT books.*, genre.genre FROM books
-                    JOIN genre ON books.genre_id = genre.id
-                    WHERE genre_id = '{$genre}'
-                    LIMIT 4";
-                $sql = $this->db->query($query);
-            } else if (strlen($genre) == 0){
-                $query = "SELECT books.*, genre.genre FROM books
-                    JOIN genre ON books.genre_id = genre.id
-                    ORDER BY books.id ASC
-                    LIMIT 4";
-                $sql = $this->db->query($query);
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+
+        $query = "SELECT books.*,genre.genre FROM books
+            JOIN genre ON books.genre_id = genre.id
+            WHERE Name LIKE '%{$search}%'
+            ORDER BY books.Name ASC
+            LIMIT {$begin}, 4";
+        $sql = $this->db->query($query);
+        $data = [];
+
+        while($row = $sql->fetch_assoc()){
+            if(file_exists("assets/img/{$row['id']}.jpg")){
+                $row['img'] = "assets/img/{$row['id']}.jpg";
+            } else{
+                $row['img'] = "assets/img/no-image.png";
             }
-        } else {
-            $query = "SELECT books.*,genre.genre FROM books
-                JOIN genre ON books.genre_id = genre.id 
-                ORDER BY Name ASC 
-                LIMIT {$begin}, 4";
-            $sql = $this->db->query($query);
+            array_push($data, $row);
         }
 
+        header("Content-Type: application/json");
+        echo json_encode($data);
+    }
+
+    function readOrder($order){
+        $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
+        $query = "SELECT books.*,genre.genre FROM books
+            JOIN genre ON books.genre_id = genre.id 
+            ORDER BY books.Name {$order}
+            LIMIT {$begin}, 4";
+        $sql = $this->db->query($query);
+        $data = [];
+
+        while($row = $sql->fetch_assoc()){
+            if(file_exists("assets/img/{$row['id']}.jpg")){
+                $row['img'] = "assets/img/{$row['id']}.jpg";
+            } else{
+                $row['img'] = "assets/img/no-image.png";
+            }
+            array_push($data, $row);
+        }
+
+        header("Content-Type: application/json");
+        echo json_encode($data);
+    }
+    
+    function readGenre($genre){
+        $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
+        $query = "SELECT books.*,genre.genre FROM books
+            JOIN genre ON books.genre_id = genre.id 
+            WHERE books.genre_id = '{$genre}'
+            ORDER BY books.Name ASC
+            LIMIT {$begin}, 4";
+        $sql = $this->db->query($query);
         $data = [];
 
         while($row = $sql->fetch_assoc()){
@@ -129,7 +149,9 @@ class Book
             http_response_code(500);
             die($e -> getMessage());
         }
+        $book_id = $sql->insert_id;
         $sql -> close();
+        return $book_id;
     }
 
     function edit($book_id)
@@ -185,6 +207,7 @@ class Book
             die($e -> getMessage());
         }
         $sql -> close();
+        return $this_id;
     }
 
     function delete($book_id) {
@@ -216,19 +239,44 @@ $book = new Book();
 // $book->read();
 switch ($_GET['action']) {
     case 'create':
-        $book -> create($_POST);
+        $book_id = $book -> create($_POST);
+        move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
         break;
     case 'edit':
         $book -> edit($_GET['id']);
         break;
     case 'update':
-        $book -> update($_POST);
+        $book_id = $book -> update($_POST);
+        move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
         break;
     case 'delete':
         $book -> delete($_GET['id']);
+        unlink("assets/img/{$_GET['id']}.jpg");
         header("Location: main.php");
         break;
     default:
-        $book -> read();
+        // switch ($_GET['order']) {
+        //     case 'ASC':
+        //         $book -> readOrder('ASC');
+        //         break;
+        //     case 'DESC':
+        //         $book -> readOrder('DESC');
+        //         break;
+        //     default:
+        //         $book -> read();
+        //         break;
+        //     }
+        // break;
+        switch ($_GET['genre']) {
+            case 'ASC':
+                $book -> readGenre('Fiction');
+                break;
+            case 'DESC':
+                $book -> readGenre('Non Fiction');
+                break;
+            default:
+                $book -> read();
+                break;
+            }
         break;
 }

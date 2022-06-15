@@ -100,23 +100,21 @@
         <div class="container-fluid justify-content-center align-self-center mg-3 px-5">
             <div class="row">
                 <div class="col-lg-3">
-                    <form action="" method="get" id="sorting">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="fw-bolder">
-                                    <i class="bi bi-search"></i>
-                                    Cari
-                                </h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="search"
-                                        placeholder="Search by Title" />
-                                    <label for="title">Cari Judul Buku</label>
-                                </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="fw-bolder">
+                                <i class="bi bi-search"></i>
+                                Cari
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="search"
+                                    placeholder="Search by Title" />
+                                <label for="title">Cari Judul Buku</label>
                             </div>
                         </div>
-                    </form>
+                    </div>
                     <br>
                     <form action="" method="get" id="searchMovie">
                         <div class="card">
@@ -130,7 +128,7 @@
                                 <div class="col-md">
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="sorting" aria-label="Floating label select">
-                                            <option selected>-</option>
+                                            <option selected hidden>-</option>
                                             <option value="ASC">A ~ Z</option>
                                             <option value="DESC">Z ~ A</option>
                                         </select>
@@ -140,7 +138,7 @@
                                         <select class="form-select" id="genre" aria-label="Floating label select"
                                             name="genre">
                                             <option value="" disabled selected>Sort by Genre</option>
-                                            <option value="">All Genre</option>
+                                            <option value="0">All Genre</option>
                                             <option value="1">Fiction</option>
                                             <option value="2">Non Foction</option>
                                         </select>
@@ -179,14 +177,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="title22.js"></script>
     <script src="genre.js"></script>
-    <script src="sort.js"></script>
+    <script src="sorting.js"></script>
     <script>
         var page = 0;
+        var search = document.getElementById("search");
+        var sorting = document.getElementById("sorting");
+        var genre = document.getElementById("genre");
         $(document).ready(function(){
             $("#load").click(function (){
                 $(this).html("Loading...").attr("disabled", "disabled")
-                $.post("data.php?action=read&begin="+page, function(response){
-                    console.log('test');
+                $.post("data.php?action=read&order="+sorting.value+"&genre="+genre.value+"&search="+search.value+"&begin="+page, function(response){
                     $.each(response, function (key,value){
                         $("#data").append(
                         `<div class="col-12 col-xxl-6 col-xl-6 col-lg-6 col-md-7 col-sm-9 mx-0.5 my-1">

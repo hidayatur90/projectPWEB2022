@@ -1,7 +1,7 @@
 var search = document.getElementById("search");
 search.addEventListener("keyup", function () {
   $("#data").html("");
-  $.get("data.php?action=read&search=" + search.value,  function (response) {
+  $.get("data.php?action=read&order=&search=" + search.value +"&begin=0",  function (response) {
     var panjang = response.length;
     if (panjang == 0) {
       const card = document.createElement('div');

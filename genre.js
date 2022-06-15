@@ -1,8 +1,9 @@
 var genre = document.getElementById("genre");
 
 $("#submit").click( function () {
+  console.log(genre.value);
   $("#data").html("");
-  $.get("data.php?action=read&genre=" + genre.value,  function (response) {
+  $.get("data.php?action=read&genre="+ genre.value +"&begin=0",  function (response) {
     var panjang = response.length;
     if (panjang == 0) {
       const card = document.createElement('div');

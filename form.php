@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <title>Tambah Buku Baru</title>
+    <link href="assets/css/style.css" rel="stylesheet">
     <style>
     body {
         font-family: "Open Sans", sans-serif;
@@ -23,95 +24,105 @@
         background-attachment: fixed;
         background-size: cover;
     }
-
-    .card {
-        background-color: yellow;
+    .btn-primary {
+        line-height: 0;
+        padding: 15px 20px;
+        border-radius: 4px;
+        transition: 0.5s;
+        color: #fff;
+        background: #4154f1;
+        box-shadow: 0px 5px 30px rgba(65, 84, 241, 0.4);
     }
-
-    .card-header,
-    .card-footer {
-        opacity: 1
+    .btn-light {
+        line-height: 0;
+        padding: 15px 20px;
+        border-radius: 4px;
+        transition: 0.5s;
+        box-shadow: 0px 5px 30px rgba(65, 84, 241, 0.4);
     }
     </style>
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center py-5">
-        <div class="container px-4 mb-3 align-items-center">
-            <h3 class="fw-bolder">
-                <i class="bi bi-plus-circle-fill"></i> Add New Book
-            </h3>
+    <div class="container my-4 py-2">
+        <div class="row">
+        <div class="col-6 col-lg-6 col-md-12 col-sm-12">
+            <div class="header">
+                <h3 class="h2 mb-3">
+                    <i class="bi bi-plus-circle-fill"></i> <strong>Add New Book</strong>
+                </h3>
+            </div>
             <form action="data.php">
                 <input type="hidden" id="id" name="id">
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1 required">
-                        <label for="Name" class="col-form-label">Name</i></label>
+                <div class="row mb-3">
+                    <label for="img" class="col-form-label col-sm-4 col-md-3 col-xl-2">Thumbnail</i></label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
+                        <input type="file" id="img" name="img" class="form-control" accept="image/jpg" onchange="readURL(this);" value="assets/img/1.jpg">
                     </div>
-                    <div class="col-6">
+                </div>
+                <div class="row mb-3">
+                    <label for="Name" class="col-form-label col-sm-4 col-md-3 col-xl-2">Name</i></label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="text" id="Name" name="Name" class="form-control" required>
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-start">
-                    <div class="col-sm-1 required">
-                        <label for="author_id" class="col-form-label">Author</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="author_id" class="col-form-label col-sm-4 col-md-3 col-xl-2">Author</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="text" class="form-control" id="author_id" name="author_id" required></input>
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1">
-                        <label for="Rating" class="col-form-label">Rating</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="Rating" class="col-form-label col-sm-4 col-md-3 col-xl-2">Rating</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="number" step="0.1" id="Rating" name="Rating" class="form-control" required>
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1">
-                        <label for="Reviews" class="col-form-label">Reviews</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="Reviews" class="col-form-label col-sm-4 col-md-3 col-xl-2">Reviews</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="number" id="Reviews" name="Reviews" class="form-control" required>
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1 required">
-                        <label for="Price" class="col-form-label">Price</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="Price" class="col-form-label col-sm-4 col-md-3 col-xl-2">Price</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="number" step="0.01" id="Price" name="Price" class="form-control" required>
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1 required">
-                        <label for="Year" class="col-form-label">Year</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="Year" class="col-form-label col-sm-4 col-md-3 col-xl-2">Year</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="number" id="Year" name="Year" class="form-control" minlength="4"
                             maxlength="4">
                     </div>
                 </div>
-                <div class="row py-2 g-3 align-items-center">
-                    <div class="col-sm-1 required">
-                        <label for="genre_id" class="col-form-label">Genre</label>
-                    </div>
-                    <div class="col-6">
+                <div class="row mb-3">
+                    <label for="genre_id" class="col-form-label col-sm-4 col-md-3 col-xl-2">Genre</label>
+                    <div class="col-sm-8 col-md-9 col-xl-10">
                         <select class="form-select" aria-label="Default select example" name="genre_id" id="genre_id" aria-placeholder="Language" required>
                             <option selected>-</option>
                         </select>
                     </div>
                 </div>
-                <div class="row py-2 g-3 mb-3">
-                    <div class="offset-1 col-sm-2">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-send-fill white"></i>
-                            Submit</button>
-                        <a href="main.php" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i>
-                            Back</a>
+                <!-- Button -->
+                <div class="row mb-3 justify-content-end">
+                    <div class="col-sm-8 col-md-9 col-xl-10">
+                      <button type="submit" class="btn btn-primary">
+                          <span class="bi bi-send-fill me-2"></span>
+                          Submit
+                        </button>
+                      <a href="main.php" class="btn btn-light border">
+                          <span class="bi bi-arrow-left me-2"></span>
+                          Back
+                        </a>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center">
+            <img id="display-thm" src="assets/img/no-image.png" alt="Thumbnail" />
+        </div>
     </div>
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -121,6 +132,19 @@
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">
     </script>
     <script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#display-thm').attr('src', e.target.result).width(350).height(400);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var file = document.getElementById("img");
+    console.log(file.value);
     $(document).ready(function() {
         $.get("genre.php", function(response){
             $.each(response, function(key,value){
@@ -134,6 +158,7 @@
             if(params[0][0] == "action" && params[0][1] == "update"){
                 $.get("data.php?action=edit&id=" + params[1][1], function(response){
                     $("form #id").val(response.id_book);
+                    // $("form #img").val(response."assets/img/"+id_book+".jpg");
                     $("form #Name").val(response.Name);
                     $("form #author_id").val(response.Author);
                     $("form #Rating").val(response.Rating);
@@ -145,20 +170,42 @@
             }
             $("form").submit(function(event) {
                 event.preventDefault();
-                var book = $(this).serialize();
+                var book = new FormData(this);
                 if(params[0][0] == "action" && params[0][1] == "update"){
-                    $.post("data.php?action=update", book, function(response) {
-                        alert("Data berhasil diubah.");
+                    // $.post("data.php?action=update", book, function(response) {
+                    //     alert("Data berhasil diubah.");
+                    // });
+                    $.ajax({
+                        url: "data.php?action=update",
+                        type: "POST",
+                        data: book,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response){
+                            alert("Data berhasil diubah.");
+                            localtion.replace("main.php");
+                        }
                     });
                 } else{
-                    $.post("data.php?action=create", book, function(response) {
-                        alert("Data berhasil ditambahkan.");
+                    // $.post("data.php?action=create", book, function(response) {
+                    //     alert("Data berhasil ditambahkan.");
+                    // });
+                    $.ajax({
+                        url: "data.php?action=create",
+                        type: "POST",
+                        data: book,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response){
+                            alert("Data berhasil ditambahkan.");
+                            localtion.replace("main.php");
+                        }
                     });
                 }
             });
-
         });
-        
     });
     </script>
 </body>

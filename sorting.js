@@ -1,8 +1,9 @@
 var sorting = document.getElementById("sorting");
 
 $("#submit").click( function () {
+  console.log(sorting.value);
   $("#data").html("");
-  $.get("./dataSorting.php?sorting=" + sorting.value,  function (response) {
+  $.get("data.php?action=read&order="+ sorting.value +"&begin=0",  function (response) {
     var panjang = response.length;
     if (panjang == 0) {
       const card = document.createElement('div');
