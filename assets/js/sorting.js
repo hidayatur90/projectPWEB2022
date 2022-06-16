@@ -30,7 +30,7 @@ $("#submit").click( function () {
                   <p class="card-text">Genre: ` + response[i]["genre"] + `</p>
                   <div class="icon">
                       <a href="form.php?action=update&id=`+ response[i]["id"] +`" class="edit-icon">
-                          <i class="bi bi-pencil-square"></i>
+                          <i class="bi bi-pencil-square me-2"></i>
                       </a>
                       <a href="data.php?action=delete&id=`+ response[i]["id"] +`" class="trash-icon">
                           <i class="bi bi-trash3-fill red"></i>

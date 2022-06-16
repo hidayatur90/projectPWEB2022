@@ -61,7 +61,6 @@ while($row = mysqli_fetch_array($result))
             margin-right: 5px;
             font-weight: 600;
             font-size: 0.7rem;
-            text-transform: uppercase;
             border: 1px solid rgb(110, 110, 110);
             padding: 1px 5px;
             border-radius: 4px;
@@ -97,7 +96,7 @@ while($row = mysqli_fetch_array($result))
                         <h3><strong><?= $name; ?></strong> (<?= $year; ?>)</h3>
                         <div class="d-flex">
                             <p class="me-2">Author : <?= $author; ?>  </p>
-                            <div class="customBadge align-self-start"><?= $rating; ?></div>
+                            <div class="customBadge align-self-start">Rating : <?= $rating; ?></div>
                         </div>
                         <p class="me-2">Genre : <?= $genre; ?>  </p>
                     </div>

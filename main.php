@@ -21,10 +21,12 @@
             background-size: cover;
         }   
         .card-img-top {
-            margin: 10px;
-            min-height: 17rem;
-            max-height: auto;
-            width: auto;
+            display: block;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 90%;
+            width: 90%;
         }
         .red {
             color: red;
@@ -77,6 +79,10 @@
         h4, h2 a {
             color:#012970;
         }
+        #books{
+            height: auto;
+            width: 20rem;
+        }
         #books:hover{
             transform: scale(1.02);
         }
@@ -86,14 +92,14 @@
     <div class="container">
         <div class="container-fluid">
             <div class="row g-2 g-lg-3 mt-4"> 
-                <div class="col-lg-10 px-5">
+                <div class="col-10">
                     <strong><h2 class="fw-bolder"><a href="index.html">Best & Popular Books</a></h2></strong> 
                 </div>
-                <div class="col-lg-2 gx-5 px-4 ml-4 mb-3">
-                <a href="form.php" class="btn btn-primary">
-                    <i class="bi bi-plus-circle-fill white"></i>
-                    Create
-                </a>
+                <div class="col-2 gx-5 ml-4 mb-3 d-flex-row p-2">
+                    <a href="form.php?action=" class="btn btn-primary" style="width:150px; margin-top:-15px;margin-left:-60px;">
+                        <i class="bi bi-plus-circle-fill white"></i>
+                        Create
+                    </a>
                 </div>
             </div>
         </div>
@@ -128,11 +134,11 @@
                                 <div class="col-md">
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="sorting" aria-label="Floating label select">
-                                            <option selected hidden>-</option>
+                                            <option disabled selected>Title Order</option>
                                             <option value="ASC">A ~ Z</option>
                                             <option value="DESC">Z ~ A</option>
                                         </select>
-                                        <label for="movieYear">Sort Result by</label>
+                                        <label for="movieYear">Title Order</label>
                                     </div>
                                     <div class="form-floating">
                                         <select class="form-select" id="genre" aria-label="Floating label select"
@@ -148,11 +154,12 @@
                             </div>
                         </div>
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary" type="button" id="submit">Search</button>
+                            <button class="btn btn-primary p-4" type="button" id="submit">Search</button>
                         </div>
                     </form>
                 </div>
                 <div class="col-lg-9">
+                    <!-- Load data -->
                     <div class="row" id="data"></div>
                     <div class="row g-4 mt-2">
                         <div class="col-12 d-grid">
@@ -172,17 +179,19 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <!-- pooper js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <!-- Bootstrap -->
+    <!-- Bootstrap and AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="assets/js/title2.js"></script>
-    <script src="assets/js/sorting2.js"></script>
+    <!-- Import for search and order -->
+    <script src="assets/js/title.js"></script>
+    <script src="assets/js/sorting.js"></script>
     <script>
         var page = 0;
         var search = document.getElementById("search");
         var sorting = document.getElementById("sorting");
         var genre = document.getElementById("genre");
         $(document).ready(function(){
+            // Load data
             $("#load").click(function (){
                 $(this).html("Loading...").attr("disabled", "disabled")
                 $.post("data.php?action=read&order="+sorting.value+"&genre="+genre.value+"&search="+search.value+"&begin="+page, function(response){
@@ -201,7 +210,7 @@
                                     <p class="card-text">Genre: ` + value.genre + `</p>
                                     <div class="icon">
                                         <a href="form.php?action=update&id=` + value.id + `" class="edit-icon">
-                                            <i class="bi bi-pencil-square"></i>
+                                            <i class="bi bi-pencil-square me-2"></i>
                                         </a>
                                         <a href="data.php?action=delete&id=` + value.id + `" class="trash-icon">
                                             <i class="bi bi-trash3-fill red"></i>
@@ -211,7 +220,7 @@
                             </div>
                         </div>`);
                     });
-                    AOS.init();
+                    AOS.init(); //AOS start
                     page += 4;
                     $("#load").html("<i class='bi bi-arrow-bar-down me-2'></i>Load More").removeAttr("disabled")
                 });

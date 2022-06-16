@@ -4,8 +4,10 @@ require_once("db.php");
 
 class Book
 {
+    // Deklarasi Variable
     private $db;
 
+    // Construct 
     function __construct()
     {
         $this -> db = new mysqli(HOST, USER, PASS, DB);
@@ -14,6 +16,7 @@ class Book
         }
     }
 
+    // Read data for main.php and for Search title (default)
     function read(){
         $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
         $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -39,6 +42,7 @@ class Book
         echo json_encode($data);
     }
 
+    // Read for ordered data
     function readOrder($order){
         $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
         $genre = isset($_GET['genre']) ? $_GET['genre'] : 0;
@@ -73,6 +77,7 @@ class Book
         echo json_encode($data);
     }
 
+    // Get max id of author
     function get_max_id(){
         require_once("db.php");
         $query = "SELECT max(id) as id FROM author";
@@ -84,6 +89,7 @@ class Book
         return $sql+1;
     }
 
+    // Insert author data
     function create_author($data)
     {
         foreach ($data as $key => $value) {
@@ -108,6 +114,7 @@ class Book
         $sql -> close();
     }
 
+    // Insert book data
     function create($data)
     {
         foreach ($data as $key => $value) {
@@ -143,11 +150,12 @@ class Book
         return $book_id;
     }
 
+    // Detail for edit
     function detail($id)
-    {
-        $query = "SELECT books.*, author.name AS Author
-            FROM books LEFT JOIN author ON books.author_id = author.id 
-            WHERE books.id={$id}";
+    {   
+        $query = "SELECT books.*, books.id AS id_book, author.*
+        FROM books LEFT JOIN author ON books.author_id = author.id 
+        WHERE books.id={$id}";
         
         $sql = $this -> db -> query($query);
         $data = $sql->fetch_assoc();
@@ -156,16 +164,18 @@ class Book
         echo json_encode($data);
     }
 
+    // Update book data
     function update($data)
     {   
-
         foreach ($data as $key => $value) {
             $value = is_array($value) ? trim(implode(',', $value)) : trim($value);
             $data[$key] = (strlen($value) > 0 ? $value : NULL);
         }
 
         $auth_id = $this->get_max_id();
-        // $book_id = $data['id'];
+        $this->create_author($data);
+        $book_id = $data['id'];
+
         $query = "UPDATE books 
                 SET Name=?,
                     author_id=?,
@@ -196,11 +206,10 @@ class Book
             die($e -> getMessage());
         }
         $sql -> close();
-        // $this->create($data);
-        // $this->delete();
         return $book_id;
     }
 
+    // Delete book data
     function delete($book_id) {
         $query = "DELETE FROM books
             WHERE books.id=?";
@@ -223,26 +232,56 @@ class Book
         header("Content-Type: application/json");
         echo json_encode($data);
     }
-
+    
 }
 
 $book = new Book();
-// $book->read();
+// Action condition
 switch ($_GET['action']) {
     case 'create':
         $book_id = $book -> create($_POST);
+        $path = $_FILES['img']['tmp_name'];
         move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
-        break;
+        // $fieldname = $_POST['img']; // don't use $_REQUEST
+        // $extension = pathinfo($_FILES[$fieldname]['name'], PATHINFO_EXTENSION);
+
+        // $uploaddir = 'assets/img/';
+        // $uploadfile = $uploaddir . "$book_id.".$extension;
+
+        // if (move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadfile)) {
+        //     break;
+        // } else {
+        //     echo "<script>
+        //         alert('Ekstensi file salah');
+        //     </script>";
+        // }
     case 'detail':
         $book -> detail($_GET['id']);
         break;
     case 'update':
+        // $book_id = $book -> update($_POST);
+        // $fieldname = $_POST['img'];
+        // $extension = pathinfo($_FILES[$fieldname]['name'], PATHINFO_EXTENSION);
+
+        // $uploaddir = "assets/img/";
+        // $uploadfile = $uploaddir . $book_id . '.' . $extension;
+
+        // if (move_uploaded_file($_FILES['img']['tmp_name'], $uploadfile)) {
+        //     break;
+        // } else {
+        //     echo "<script>
+        //         alert('Ekstensi file salah');
+        //     </script>";
+        // }
         $book_id = $book -> update($_POST);
         move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
         break;
     case 'delete':
         $book -> delete($_GET['id']);
         unlink("assets/img/{$_GET['id']}.jpg");
+        echo "<script>
+            alert('Data Berhasil di hapus');
+        </script>";
         header("Location: main.php");
         break;
     default:
