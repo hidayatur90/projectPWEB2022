@@ -22,6 +22,8 @@ while($row = mysqli_fetch_array($result))
 	$price = $row['Price'];
 	$genre = $row['Genre'];
 }
+// $files = glob("/assets/img/$book_id.jpg");
+
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +85,13 @@ while($row = mysqli_fetch_array($result))
             <div class="card mt-3 col-12 col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12" data-aos="fade-up">
                 <div class="card-body ms-2">
                     <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 text-center text-sm-start">
-                        <img src="assets/img/no-image.png" alt="<?= $name; ?>" width="250" height="400" class="me-4">    
+                        <?php 
+                            $directory = "assets/img/no-image.png";
+                            if (file_exists("assets/img/$book_id.jpg")){
+                                $directory = "assets/img/$book_id.jpg";
+                            } 
+                            ?>
+                        <img src="<?= $directory ?>" alt="<?= $name; ?>" width="250" height="400" class="me-4">    
                     </div>
                     <div class="mt-3 mt-sm-0 col text-center text-sm-start">
                         <h3><strong><?= $name; ?></strong> (<?= $year; ?>)</h3>

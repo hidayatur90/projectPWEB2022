@@ -41,34 +41,23 @@ class Book
 
     function readOrder($order){
         $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
-        $query = "SELECT books.*,genre.genre FROM books
-            JOIN genre ON books.genre_id = genre.id 
-            ORDER BY books.Name {$order}
-            LIMIT {$begin}, 4";
-        $sql = $this->db->query($query);
-        $data = [];
+        $genre = isset($_GET['genre']) ? $_GET['genre'] : 0;
 
-        while($row = $sql->fetch_assoc()){
-            if(file_exists("assets/img/{$row['id']}.jpg")){
-                $row['img'] = "assets/img/{$row['id']}.jpg";
-            } else{
-                $row['img'] = "assets/img/no-image.png";
-            }
-            array_push($data, $row);
+        if($genre==0 || $genre==''){       
+            $query = "SELECT books.*,genre.genre FROM books
+                JOIN genre ON books.genre_id = genre.id
+                ORDER BY books.Name {$order}
+                LIMIT {$begin}, 4";
+                $sql = $this->db->query($query);
+        } else{
+            $query = "SELECT books.*,genre.genre FROM books
+                JOIN genre ON books.genre_id = genre.id
+                WHERE books.genre_id = '{$genre}'
+                ORDER BY books.Name {$order}
+                LIMIT {$begin}, 4";
+            $sql = $this->db->query($query);
         }
 
-        header("Content-Type: application/json");
-        echo json_encode($data);
-    }
-    
-    function readGenre($genre){
-        $begin = isset($_GET['begin']) ? $_GET['begin'] : 0;
-        $query = "SELECT books.*,genre.genre FROM books
-            JOIN genre ON books.genre_id = genre.id 
-            WHERE books.genre_id = '{$genre}'
-            ORDER BY books.Name ASC
-            LIMIT {$begin}, 4";
-        $sql = $this->db->query($query);
         $data = [];
 
         while($row = $sql->fetch_assoc()){
@@ -154,7 +143,7 @@ class Book
         return $book_id;
     }
 
-    function edit($book_id)
+    function detail($book_id)
     {
         $query = "SELECT books.*, books.id AS id_book, author.name AS Author, genre.genre AS Genre 
             FROM books 
@@ -242,8 +231,8 @@ switch ($_GET['action']) {
         $book_id = $book -> create($_POST);
         move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
         break;
-    case 'edit':
-        $book -> edit($_GET['id']);
+    case 'detail':
+        $book -> detail($_GET['id']);
         break;
     case 'update':
         $book_id = $book -> update($_POST);
@@ -255,24 +244,12 @@ switch ($_GET['action']) {
         header("Location: main.php");
         break;
     default:
-        // switch ($_GET['order']) {
-        //     case 'ASC':
-        //         $book -> readOrder('ASC');
-        //         break;
-        //     case 'DESC':
-        //         $book -> readOrder('DESC');
-        //         break;
-        //     default:
-        //         $book -> read();
-        //         break;
-        //     }
-        // break;
-        switch ($_GET['genre']) {
+        switch ($_GET['order']) {
             case 'ASC':
-                $book -> readGenre('Fiction');
+                $book -> readOrder('ASC');
                 break;
             case 'DESC':
-                $book -> readGenre('Non Fiction');
+                $book -> readOrder('DESC');
                 break;
             default:
                 $book -> read();

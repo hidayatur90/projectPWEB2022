@@ -156,7 +156,7 @@
                 params[i] = params[i].split('=');
             }
             if(params[0][0] == "action" && params[0][1] == "update"){
-                $.get("data.php?action=edit&id=" + params[1][1], function(response){
+                $.get("data.php?action=detail&id=" + params[1][1], function(response){
                     $("form #id").val(response.id_book);
                     // $("form #img").val(response."assets/img/"+id_book+".jpg");
                     $("form #Name").val(response.Name);

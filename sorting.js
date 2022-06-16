@@ -3,14 +3,14 @@ var sorting = document.getElementById("sorting");
 $("#submit").click( function () {
   console.log(sorting.value);
   $("#data").html("");
-  $.get("data.php?action=read&order="+ sorting.value +"&begin=0",  function (response) {
+  $.get("data.php?action=read&order="+ sorting.value +"&genre="+ genre.value +"&begin=0",  function (response) {
     var panjang = response.length;
     if (panjang == 0) {
       const card = document.createElement('div');
       card.classList.add('col');
       card.innerHTML = `
-      <div class="text-center" style="color:white;">
-        <h2>Film Tidak Ditemukan</h2>
+      <div class="text-center" style="color:#012970;">
+        <h2>Nama Buku Tidak Ditemukan</h2>
       </div>`;
       $("#data").html(card);
       
