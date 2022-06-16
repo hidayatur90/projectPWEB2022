@@ -57,7 +57,7 @@
                 <div class="row mb-3">
                     <label for="img" class="col-form-label col-sm-4 col-md-3 col-xl-2">Thumbnail</i></label>
                     <div class="col-sm-8 col-md-9 col-xl-10">
-                        <input type="file" id="img" name="img" class="form-control" accept="image/jpg" onchange="readURL(this);" value="assets/img/1.jpg">
+                        <input type="file" id="img" name="img" class="form-control" accept="image/jpg" onchange="readURL(this);">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -121,7 +121,7 @@
             </form>
         </div>
         <div class="col-6 col-lg-6 col-md-12 col-sm-12 d-flex justify-content-center">
-            <img id="display-thm" src="assets/img/no-image.png" alt="Thumbnail" />
+            <img id="display-thm" src="assets/img/no-image.png" alt="Thumbnail" width=400 height=500 />
         </div>
     </div>
     <!-- Jquery -->
@@ -137,14 +137,13 @@
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $('#display-thm').attr('src', e.target.result).width(350).height(400);
+                $('#display-thm').attr('src', e.target.result);
             };
 
             reader.readAsDataURL(input.files[0]);
         }
     }
-    var file = document.getElementById("img");
-    console.log(file.value);
+
     $(document).ready(function() {
         $.get("genre.php", function(response){
             $.each(response, function(key,value){
@@ -158,7 +157,7 @@
             if(params[0][0] == "action" && params[0][1] == "update"){
                 $.get("data.php?action=detail&id=" + params[1][1], function(response){
                     $("form #id").val(response.id_book);
-                    // $("form #img").val(response."assets/img/"+id_book+".jpg");
+                    $("#display-thm").attr("src","assets/img/"+response.id_book+".jpg");
                     $("form #Name").val(response.Name);
                     $("form #author_id").val(response.Author);
                     $("form #Rating").val(response.Rating);
