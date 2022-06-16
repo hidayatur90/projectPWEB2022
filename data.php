@@ -240,39 +240,12 @@ $book = new Book();
 switch ($_GET['action']) {
     case 'create':
         $book_id = $book -> create($_POST);
-        $path = $_FILES['img']['tmp_name'];
         move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
-        // $fieldname = $_POST['img']; // don't use $_REQUEST
-        // $extension = pathinfo($_FILES[$fieldname]['name'], PATHINFO_EXTENSION);
-
-        // $uploaddir = 'assets/img/';
-        // $uploadfile = $uploaddir . "$book_id.".$extension;
-
-        // if (move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadfile)) {
-        //     break;
-        // } else {
-        //     echo "<script>
-        //         alert('Ekstensi file salah');
-        //     </script>";
-        // }
+        break;
     case 'detail':
         $book -> detail($_GET['id']);
         break;
     case 'update':
-        // $book_id = $book -> update($_POST);
-        // $fieldname = $_POST['img'];
-        // $extension = pathinfo($_FILES[$fieldname]['name'], PATHINFO_EXTENSION);
-
-        // $uploaddir = "assets/img/";
-        // $uploadfile = $uploaddir . $book_id . '.' . $extension;
-
-        // if (move_uploaded_file($_FILES['img']['tmp_name'], $uploadfile)) {
-        //     break;
-        // } else {
-        //     echo "<script>
-        //         alert('Ekstensi file salah');
-        //     </script>";
-        // }
         $book_id = $book -> update($_POST);
         move_uploaded_file($_FILES['img']['tmp_name'], "assets/img/{$book_id}.jpg");
         break;

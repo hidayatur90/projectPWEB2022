@@ -76,13 +76,13 @@
             text-decoration: none !important; 
             color:black;
         }
-        h4, h2 a {
+        h4 a, h1 a, h2 a {
             color:#012970;
         }
-        #books{
+        /* #books{
             height: auto;
             width: 20rem;
-        }
+        } */
         #books:hover{
             transform: scale(1.02);
         }
@@ -93,17 +93,27 @@
         <div class="container-fluid">
             <div class="row g-2 g-lg-3 mt-4"> 
                 <div class="col-10">
-                    <strong><h2 class="fw-bolder"><a href="index.html">Best & Popular Books</a></h2></strong> 
-                </div>
-                <div class="col-2 gx-5 ml-4 mb-3 d-flex-row p-2">
-                    <a href="form.php?action=" class="btn btn-primary" style="width:150px; margin-top:-15px;margin-left:-60px;">
-                        <i class="bi bi-plus-circle-fill white"></i>
-                        Create
-                    </a>
+                    <strong><h1 class="fw-bolder"><a href="index.html">Best & Popular Books</a></h1></strong> 
                 </div>
             </div>
         </div>
-        <div class="container-fluid justify-content-center align-self-center mg-3 px-5">
+        <div class="container-fluid">
+            <div class="row g-2 g-lg-3 mt-4"> 
+                <div class="col-10">
+                    <a href="form.php?action=" class="btn btn-primary" style="width:150px; margin-top:-15px;">
+                        <i class="bi bi-plus-circle white me-2"></i>
+                        Tambah
+                    </a>
+                </div>
+                <div class="col-2 mb-3">
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width:150px; margin-top:-15px;">
+                        <i class="bi bi-question-circle me-2"></i>
+                        Bantuan
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid justify-content-center align-self-center mg-3">
             <div class="row">
                 <div class="col-lg-3">
                     <div class="card">
@@ -134,21 +144,21 @@
                                 <div class="col-md">
                                     <div class="form-floating mb-3">
                                         <select class="form-select" id="sorting" aria-label="Floating label select">
-                                            <option disabled selected>Title Order</option>
+                                            <option disabled selected>Order Judul</option>
                                             <option value="ASC">A ~ Z</option>
                                             <option value="DESC">Z ~ A</option>
                                         </select>
-                                        <label for="movieYear">Title Order</label>
+                                        <label for="movieYear">Order Judul</label>
                                     </div>
                                     <div class="form-floating">
                                         <select class="form-select" id="genre" aria-label="Floating label select"
                                             name="genre">
-                                            <option value="" disabled selected>Sort by Genre</option>
-                                            <option value="0">All Genre</option>
+                                            <option value="" disabled selected>Genre</option>
+                                            <option value="0">Semua Genre</option>
                                             <option value="1">Fiction</option>
                                             <option value="2">Non Foction</option>
                                         </select>
-                                        <label for="movieYear">Sort by Genre</label>
+                                        <label for="movieYear">Genre</label>
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +184,29 @@
     <footer class="container-fluid text-center">
         <p>&#169; 202410101057-Muhammad Hidayatur Rahman</p>
     </footer>
+    
+    <!-- Modal Help-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Bantuan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ol>
+                    <li>Untuk detail Page, Klik Judul Buku</li>
+                    <li>Asynchronous Search Judul</li>
+                    <li>Klik Search, untuk Order (Title & Genre)</li>
+                    <li>Accept file image (.jpg)</li>
+                </ol>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" style="width:100px;margin-top:-3px;">OK</button>
+            </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>

@@ -70,7 +70,7 @@ if($action == "update"){
                     <i class="bi bi-plus-circle-fill"></i> <strong><?= $title ?></strong>
                 </h3>
             </div>
-            <form action="data.php">
+            <form method="post" action="data.php" enctype="multipart/form-data">
                 <!-- Hidden ID -->
                 <input type="hidden" id="id" name="id">
                 <!-- Thumbnail Book -->
@@ -117,7 +117,7 @@ if($action == "update"){
                 </div>
                 <!-- Tahun Terbit -->
                 <div class="row mb-3">
-                    <label for="Year" class="col-form-label col-sm-4 col-md-3 col-xl-2">Thn. Terbit</label>
+                    <label for="Year" class="col-form-label col-sm-4 col-md-3 col-xl-2">Tahun</label>
                     <div class="col-sm-8 col-md-9 col-xl-10">
                         <input type="number" id="Year" name="Year" class="form-control" minlength="4" maxlength="4" placeholder="Tahun Terbit">
                     </div>
