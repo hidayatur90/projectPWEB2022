@@ -1,6 +1,6 @@
 <?php
 
-require_once('db.php');
+require('db.php');
 
 $book_id = $_GET['id'];
 

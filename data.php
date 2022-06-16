@@ -121,7 +121,7 @@ class Book
         $query = "INSERT INTO books VALUES(NULL, ?, ?, ?, ?, ?, ?, ?)";
         $sql = $this -> db -> prepare($query);
         $sql -> bind_param(
-            'siiiiii',
+            'sididii',
             $data['Name'],
             $auth_id,
             $data['Rating'],
@@ -143,14 +143,12 @@ class Book
         return $book_id;
     }
 
-    function detail($book_id)
+    function detail($id)
     {
-        $query = "SELECT books.*, books.id AS id_book, author.name AS Author, genre.genre AS Genre 
-            FROM books 
-            JOIN author ON books.author_id = author.id 
-            JOIN genre ON books.genre_id = genre.id 
-            WHERE books.id=$book_id";
-            
+        $query = "SELECT books.*, author.name AS Author
+            FROM books LEFT JOIN author ON books.author_id = author.id 
+            WHERE books.id={$id}";
+        
         $sql = $this -> db -> query($query);
         $data = $sql->fetch_assoc();
 
@@ -159,14 +157,15 @@ class Book
     }
 
     function update($data)
-    {
+    {   
+
         foreach ($data as $key => $value) {
             $value = is_array($value) ? trim(implode(',', $value)) : trim($value);
             $data[$key] = (strlen($value) > 0 ? $value : NULL);
         }
 
         $auth_id = $this->get_max_id();
-        $this_id = $data['id'];
+        // $book_id = $data['id'];
         $query = "UPDATE books 
                 SET Name=?,
                     author_id=?,
@@ -175,17 +174,18 @@ class Book
                     Price=?,
                     Year=?,
                     genre_id=?
-                WHERE id = $this_id";
+                WHERE id=?";
         $sql = $this -> db -> prepare($query);
         $sql -> bind_param(
-            'siiiiii',
+            'sididiii',
             $data['Name'],
             $auth_id,
             $data['Rating'],
             $data['Reviews'],
             $data['Price'],
             $data['Year'],
-            $data['genre_id']
+            $data['genre_id'],
+            $data['id'],
         );
         
         try {
@@ -196,7 +196,9 @@ class Book
             die($e -> getMessage());
         }
         $sql -> close();
-        return $this_id;
+        // $this->create($data);
+        // $this->delete();
+        return $book_id;
     }
 
     function delete($book_id) {

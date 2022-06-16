@@ -171,9 +171,6 @@
                 event.preventDefault();
                 var book = new FormData(this);
                 if(params[0][0] == "action" && params[0][1] == "update"){
-                    // $.post("data.php?action=update", book, function(response) {
-                    //     alert("Data berhasil diubah.");
-                    // });
                     $.ajax({
                         url: "data.php?action=update",
                         type: "POST",
@@ -183,13 +180,10 @@
                         processData: false,
                         success: function(response){
                             alert("Data berhasil diubah.");
-                            localtion.replace("main.php");
+                            // localtion.replace("main.php");
                         }
                     });
                 } else{
-                    // $.post("data.php?action=create", book, function(response) {
-                    //     alert("Data berhasil ditambahkan.");
-                    // });
                     $.ajax({
                         url: "data.php?action=create",
                         type: "POST",
@@ -199,7 +193,7 @@
                         processData: false,
                         success: function(response){
                             alert("Data berhasil ditambahkan.");
-                            localtion.replace("main.php");
+                            // localtion.replace("main.php");
                         }
                     });
                 }
